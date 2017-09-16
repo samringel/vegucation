@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+
+  "name": "Vegucation",
+  "description": "Improving early childhood education with pictures of vegetables",
+  "version": "1.0.0",
+  "author":  "Sam Ringel, Rachel Shim, and Luke Ellert-Beck",
+
+  "content_scripts": [
+    {
+      "matches": [ "*://*/*" ],
+      "js": [ "vegucation-main.js" ]
+    }
+  ],
+
+  "web_accessible_resources": [
+    "broccoli.jpg"
+  ]
+}
