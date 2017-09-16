@@ -30,45 +30,86 @@ function replaceImages(node) {
 	}
 }
 
-/* Replaces all text on page with the word 'broccoli'
- *
- * TreeWalker idea credit to Anurag on StackOverflow
- * https://stackoverflow.com/questions/2579666/getelementsbytagname-equivalent-for-textnodes
- */
+/* Finds all text nodes in [node], and replaces each word with 'broccoli' */
 function replaceText(node) {
-    var walker = document.createTreeWalker(
-        node, 
-        NodeFilter.SHOW_TEXT, 
-        null, 
-        false
-    );
+    var walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null, false);
 
     while(node = walker.nextNode()) {
     	if (node.parentNode.nodeName !== "SCRIPT") {
 	        var strArray = node.nodeValue.split(" ");
 
 	        for (var i = 0; i < strArray.length; i++) {
-	        	var s = "";
-
-	        	//Checks to see if string has characters
-	        	if (/[a-z]/i.test(strArray[i])) {
-
-	        		//Checks campitalization of first letter
-	        		if (/[A-Z]/.test(strArray[i].substr(0,1))) {
-	        			s += "B";
-	        		} else {
-	        			s += "b";
-	        		}
-	        		s += "roccoli";
-
-	        		//Checks if the last character is punctuation
-	        		if (/[.,\/#!$%\^&\*;:{}=\-_`~()]/g.test(strArray[i].substr(strArray[i].length - 1))) {
-		        		s += strArray[i].substr(strArray[i].length - 1);
-		        	}
-		        	strArray[i] = s;
-	        	}
+	        	strArray[i] = textToBrocc(strArray[i]);
 	        }
 	        node.nodeValue = strArray.join(' ');
 	    }
     }
+}
+
+/* Returns string [text], replaced with the word 'broccoli'. Capitalization and special
+ * characters are preserved
+ */
+function textToBrocc(text) {
+	if (text.length == 0) { return ""; }
+
+	//If this string consists of an apostrophe followed by a letter, it is preserved
+	if (text.length == 2 && text[0] == '\'' && 
+		((text[1].charCodeAt(0) >= 65  && text[1].charCodeAt(0) <= 90) || 
+			(text[1].charCodeAt(0) >= 97 && text[1].charCodeAt(0) <= 122))) {
+		return text;
+	}
+
+	var toS = [];
+	var j = 0;
+
+	var currCharVal = text[j].charCodeAt(0);
+	//Preserves characters until a letter is reached
+	while (!(currCharVal >= 65  && currCharVal <= 90) && !(currCharVal >= 97 && currCharVal <= 122)) {
+		j++;
+		if (j < text.length) {
+			currCharVal = text[j].charCodeAt(0);
+		} else {
+			break;
+		}
+	}
+	toS.push(text.substr(0,j));
+
+	if (j < text.length) {
+		var isCap = false;
+		currCharVal = text[j].charCodeAt(0);
+
+		//Checks capitalization of first letter
+		if (currCharVal >= 65  && currCharVal <= 90) {
+			toS.push("B");
+			isCap = true;
+		} else {
+			toS.push("b");
+		}
+
+		j++;
+		if (j < text.length) {
+			var currCharVal = text[j].charCodeAt(0);
+			//Runs while every next character is a letter, and checks whether they are all capitalized
+	    	while ((currCharVal >= 65  && currCharVal <= 90) || (currCharVal >= 97 && currCharVal <= 122)) {
+	    		if (isCap && currCharVal >= 97 && currCharVal <= 122) {
+	    			isCap = false;
+	    		}
+	    		j++;
+	    		if (j < text.length) {
+	    			currCharVal = text[j].charCodeAt(0);
+	    		} else {
+	    			break;
+	    		}
+	    	}
+    		toS.push(isCap ? "ROCCOLI" : "roccoli");
+	    } else {
+	    	toS.push("roccoli");
+	    }
+
+	    //Recursively calls textToBrocc() if letters are followed by other character types
+    	if (j !== text.length) {
+    		toS.push(textToBrocc(text.substr(j)));
+    	}
+    }
+    return toS.join('');
 }
