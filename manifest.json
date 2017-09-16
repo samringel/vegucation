@@ -4,19 +4,17 @@
   "name": "Vegucation",
   "description": "Improving early childhood education with pictures of vegetables",
   "version": "1.0.0",
-  "author":  "Sam Ringel, Rachel Shim, and Luke Ellert-Beck",
+  "author":  "Sam Ringel, Laasya Renganathan, and Luke Ellert-Beck",
+
+  "browser_action": {
+      "default_popup": "user-control.html"
+    },
 
   "content_scripts": [
     {
       "matches": [ "*://*/*" ],
       "js": [ "vegucation-main.js" ]
     }
-  ],
-
-  "options_page": "user-control.html",
-
-  "permissions": [
-    "identity"
   ],
 
   "web_accessible_resources": [
