@@ -90,26 +90,26 @@ function textToBrocc(text) {
 		if (j < text.length) {
 			var currCharVal = text[j].charCodeAt(0);
 			//Runs while every next character is a letter, and checks whether they are all capitalized
-	    	while ((currCharVal >= 65  && currCharVal <= 90) || (currCharVal >= 97 && currCharVal <= 122)) {
-	    		if (isCap && currCharVal >= 97 && currCharVal <= 122) {
-	    			isCap = false;
-	    		}
-	    		j++;
-	    		if (j < text.length) {
-	    			currCharVal = text[j].charCodeAt(0);
-	    		} else {
-	    			break;
-	    		}
-	    	}
-    		toS.push(isCap ? "ROCCOLI" : "roccoli");
-	    } else {
-	    	toS.push("roccoli");
-	    }
+			while ((currCharVal >= 65  && currCharVal <= 90) || (currCharVal >= 97 && currCharVal <= 122)) {
+				if (isCap && currCharVal >= 97 && currCharVal <= 122) {
+					isCap = false;
+				}
+				j++;
+				if (j < text.length) {
+					currCharVal = text[j].charCodeAt(0);
+				} else {
+					break;
+				}
+			}
+			toS.push(isCap ? "ROCCOLI" : "roccoli");
+		} else {
+			toS.push("roccoli");
+		}
 
-	    //Recursively calls textToBrocc() if letters are followed by other character types
-    	if (j !== text.length) {
-    		toS.push(textToBrocc(text.substr(j)));
-    	}
-    }
-    return toS.join('');
+		//Recursively calls textToBrocc() if letters are followed by other character types
+		if (j !== text.length) {
+			toS.push(textToBrocc(text.substr(j)));
+		}
+	}
+	return toS.join('');
 }
