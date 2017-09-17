@@ -2,49 +2,44 @@
 <html>
 <head><title>Vegucation</title></head>
 <body>
+  <link rel="stylesheet" type="text/css" href="user-control.css">
+  <script src="user-control.js"></script>
+  <div id="tabs">
+    <button class="tab active" id="tab-s">Enroll</button>
+    <button class="tab" id="tab-t">Create</button>
+  </div>
 
-  <header>
-    <h1>Welcome, User </h1>
-    <h3>Classes where you are a student:</h3>
-  </header>
-  <table>
-    <tr>
-      <td>class 1</td>
-      <td><button type="button">delete class</button></td>
-    </tr>
-    <tr>
-      <td>class 2</td>
-      <td><button type="button">delete class</button></td>
-    </tr>
-  </table>
-
-  <header>
-    <h4>Enroll in a new class</h4>
-  </header>
-  Enter the course code for the class you want to sign up for.
-  <form action="/action_page.php">
-	Course Code: <input type="text" name="FirstName" value="Course Code"><br>
-	<input type="submit" value="Submit">
-  </form>
-  
-  
-  
-  <header>
-    <h3>Classes where you are a teacher:</h3>
-  </header>
-  <table>
-    <tr>
-      <td>class 1</td>
-      <td><button type="button">edit class</button></td>
-      <td><button type="button">delete class</button></td>
-    </tr>
-    <tr>
-      <td>class 2</td>      
-      <td><button type="button">edit class</button></td>
-      <td><button type="button">delete class</button></td>
-    </tr>
-  </table>
-  <button type="button">Create a new class</button>
-
+  <div id="student" class="content">
+    <table id="classList">
+      <tr id="1">
+        <td class="classTitle">class 1</td>
+        <td><button class="delete" id="d1" type="button"></button></td>
+      </tr>
+      <tr id="2">
+        <td class="classTitle">class 2</td>
+        <td><button class="delete" id="d2" type="button"></button></td>
+      </tr>
+    </table>
+    <div id="addClass">
+      <input id="classCodeEnter" type="text" name="classCode" placeholder="Class code">
+      <button id="joinClass">Join</button>
+    </div>
+  </div>
+    
+  <div id="teacher" class="hidden">
+    <table>
+      <tr>
+        <td>class 1</td>
+        <td><button type="button">edit class</button></td>
+        <td><button type="button">delete class</button></td>
+      </tr>
+      <tr>
+        <td>class 2</td>      
+        <td><button type="button">edit class</button></td>
+        <td><button type="button">delete class</button></td>
+      </tr>
+    </table>
+    <button type="button">Create a new class</button>
+  </div>
 </body>
 </html>

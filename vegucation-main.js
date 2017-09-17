@@ -4,9 +4,6 @@
  * Chrome extension to help children grow into learners with the power of vegetables
  */
 
-replaceText(document.body);
-replaceImages(document);
-
 /* Runs replaceImages on all new html */
 var observer = new MutationObserver(function (mutations) {
   mutations.forEach(function(mutation) {
@@ -19,7 +16,49 @@ var observer = new MutationObserver(function (mutations) {
   })
 });
 
-observer.observe(document.body, {childList: true, subtree: true});
+
+//Server related, will be used in future
+/*var eC = chrome.storage.local.get("enrolled", function(data) {return data; });
+if (eC != undefined) {
+  var url = chrome.tabs.getCurrent(function (tab) {return tab.url;})
+	var date = new Date();
+	var h = date.getHours();
+	var m = date.getMinutes();
+  var shouldBrocc = false;
+	for (var t = 0; t < enrolledClasses.length; t++) {
+    if (shouldBrocc) break;
+		if (eC[t].get("startTime").substr(0,2) >= h && eC[t].get("startTime").substr(2) >= m) {
+			if (eC[t].get("endTime").substr(0,2) <= h && eC[t].get("endTime").substr(2) <= m) {
+        shouldBrocc = !eC[t].get("isBlacklist");
+        for (var i = 0; i < eC[t].get("list").length; i++) {
+
+        }
+			}
+		}
+	}
+
+  if (shouldBrocc) {
+    replaceText(document.body);
+    replaceImages(document);
+    observer.observe(document.body, {childList: true, subtree: true});
+  }
+}*/
+
+var whitelist = ["khanacademy.org", "wikipedia.org", "brainpop.com", "mail.yahoo.com", "commonapp.org", "epa.gov\/asbestos"];
+var url = window.location.href;
+var isWhitelisted = false;
+for (var i = 0; i < whitelist.length; i++) {
+	if (url.includes(whitelist[i])) {
+		isWhitelisted=true;
+		break;
+	}
+}
+
+if (!isWhitelisted) {
+	replaceText(document.body);
+	replaceImages(document);
+	observer.observe(document.body, {childList: true, subtree: true});
+}
 
 /* Finds images in html [node], and replaces their sources with broccoli.jpg */
 function replaceImages(node) {
@@ -32,18 +71,18 @@ function replaceImages(node) {
 
 /* Finds all text nodes in [node], and replaces each word with 'broccoli' */
 function replaceText(node) {
-    var walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null, false);
+	var walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null, false);
 
-    while(node = walker.nextNode()) {
-    	if (node.parentNode.nodeName !== "SCRIPT") {
-	        var strArray = node.nodeValue.split(" ");
+	while(node = walker.nextNode()) {
+		if (node.parentNode.nodeName !== "SCRIPT") {
+			var strArray = node.nodeValue.split(" ");
 
-	        for (var i = 0; i < strArray.length; i++) {
-	        	strArray[i] = textToBrocc(strArray[i]);
-	        }
-	        node.nodeValue = strArray.join(' ');
-	    }
-    }
+			for (var i = 0; i < strArray.length; i++) {
+				strArray[i] = textToBrocc(strArray[i]);
+			}
+			node.nodeValue = strArray.join(' ');
+		}
+	}
 }
 
 /* Returns string [text], replaced with the word 'broccoli'. Capitalization and special
