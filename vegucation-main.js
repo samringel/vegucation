@@ -1,5 +1,5 @@
 /* Vegucation
- * By Sam Ringel, Rachel Shim, and Luke Ellert-Beck
+ * By Sam Ringel, Laasya Renganathan, and Luke Ellert-Beck
  *
  * Chrome extension to help children grow into learners with the power of vegetables
  */
@@ -16,35 +16,8 @@ var observer = new MutationObserver(function (mutations) {
   })
 });
 
-
-//Server related, will be used in future
-/*var eC = chrome.storage.local.get("enrolled", function(data) {return data; });
-if (eC != undefined) {
-  var url = chrome.tabs.getCurrent(function (tab) {return tab.url;})
-	var date = new Date();
-	var h = date.getHours();
-	var m = date.getMinutes();
-  var shouldBrocc = false;
-	for (var t = 0; t < enrolledClasses.length; t++) {
-    if (shouldBrocc) break;
-		if (eC[t].get("startTime").substr(0,2) >= h && eC[t].get("startTime").substr(2) >= m) {
-			if (eC[t].get("endTime").substr(0,2) <= h && eC[t].get("endTime").substr(2) <= m) {
-        shouldBrocc = !eC[t].get("isBlacklist");
-        for (var i = 0; i < eC[t].get("list").length; i++) {
-
-        }
-			}
-		}
-	}
-
-  if (shouldBrocc) {
-    replaceText(document.body);
-    replaceImages(document);
-    observer.observe(document.body, {childList: true, subtree: true});
-  }
-}*/
-
-var whitelist = ["khanacademy.org", "wikipedia.org", "brainpop.com", "mail.yahoo.com", "commonapp.org", "epa.gov\/asbestos"];
+/* Checks whether current site is on whitelist*/
+var whitelist = ["khanacademy.org", "wikipedia.org", "commonapp.org"];
 var url = window.location.href;
 var isWhitelisted = false;
 for (var i = 0; i < whitelist.length; i++) {
@@ -53,7 +26,6 @@ for (var i = 0; i < whitelist.length; i++) {
 		break;
 	}
 }
-
 if (!isWhitelisted) {
 	replaceText(document.body);
 	replaceImages(document);

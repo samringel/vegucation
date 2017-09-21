@@ -7,20 +7,14 @@
   "author":  "Sam Ringel, Laasya Renganathan, and Luke Ellert-Beck",
 
   "browser_action": {
-      "default_icon": "broccoli.png",
-      "default_popup": "user-control.html"
-    },
+    "default_icon": "broccoli.png"
+  },
 
   "content_scripts": [
     {
       "matches": [ "*://*/*" ],
       "js": [ "vegucation-main.js" ]
     }
-  ],
-
-  "permissions": [
-    "storage",
-    "tabs"
   ],
 
   "web_accessible_resources": [
